@@ -1,0 +1,66 @@
+
+<% if action == :edit && cat.persisted? %>
+    <% verb = "Edit"%>
+    <% url1 = cat_url %>
+<% else %>
+    <% verb = "Create"%>
+    <% url1 = cats_url %>
+<% end %>
+
+<h1> <%= verb %> your cat </h1>
+
+
+<form action="<%=url1%>" method="post">
+    <%if action == :edit %>
+        <input type="hidden" name ="_method" value="patch">
+        <input type="hidden" name="cat[id]" value ="<%=cat.id%>">
+    <% end %>
+
+
+    <label> Name 
+        <input type="text" name="cat[name]" value="<%=cat.name%>">
+    </label>
+    <br>
+
+
+    <label> Color
+        <select name="cat[color]">
+        
+        <% Cat::COLORS.each do |color| %>
+            <% if cat.color == color%>
+                <option value="<%= color %>"selected> <%= color %> </option>
+            <%else%>
+                <option value="<%= color %>"> <%= color %> </option>
+            <%end%>
+        <% end %>
+        </select>
+    </label>
+    <br>
+    <label> Sex <br>
+    <%if cat.sex == "M"%>
+        <input type="radio" name="cat[sex]" value="M" checked="checked"> Male<br>
+        <input type="radio" name="cat[sex]" value="F"> Female<br>
+    <%elsif cat.sex == "F" %>
+        <input type="radio" name="cat[sex]" value="M" > Male<br>
+        <input type="radio" name="cat[sex]" value="F" checked="checked"> Female<br>
+    <%else%>
+        <input type="radio" name="cat[sex]" value="M" > Male<br>
+        <input type="radio" name="cat[sex]" value="F" > Female<br>
+    <%end%>
+
+
+    </label>
+    
+    <br>
+    <label> Birthdate 
+        <input type="date" name="cat[birth_date]" value="<%=cat.birth_date%>">
+    </label>
+    
+    <br>
+    <label> Description
+        <textarea name="cat[description]"><%=cat.description%> </textarea>
+    </label>
+    <br>
+    <br>
+    <input type="submit" value="<%=verb%> your cat.">
+</form>
